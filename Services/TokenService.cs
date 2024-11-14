@@ -9,22 +9,22 @@ namespace BookStore.Services
 {
  public class TokenService
  {
-  public string GenerateJwtToken(AuthEntity authEntity)
+  public static string GenerateJwtToken(string userId)
   {
 
    byte[] key = Encoding.ASCII.GetBytes(Key.SecretKey);
-   var tokenConfig = new SecurityTokenDescriptor
+   SecurityTokenDescriptor tokenConfig = new()
    {
-    Subject = new System.Security.Claims.ClaimsIdentity(new Claim[] {
-     new Claim("userId", authEntity.UserId),
-    }),
+    Subject = new System.Security.Claims.ClaimsIdentity([
+     new Claim("userId", userId),
+    ]),
     Expires = DateTime.UtcNow.AddHours(1),
     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
    };
 
-   var tokenHanlder = new JwtSecurityTokenHandler();
-   var token = tokenHanlder.CreateToken(tokenConfig);
-   var tokenString = tokenHanlder.WriteToken(token);
+   JwtSecurityTokenHandler tokenHanlder = new();
+   SecurityToken token = tokenHanlder.CreateToken(tokenConfig);
+   string tokenString = tokenHanlder.WriteToken(token);
 
    return tokenString;
   }

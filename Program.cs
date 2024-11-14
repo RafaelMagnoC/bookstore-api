@@ -1,4 +1,5 @@
 using System.Text;
+using BookStore.App.Modules.Auth;
 using BookStore.App.Modules.User;
 using BookStore.Config;
 using BookStore.Data;
@@ -25,24 +26,23 @@ builder.Services.AddSwaggerGen(swagger =>
  });
 
  swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
+  {
+   {
+    new OpenApiSecurityScheme
     {
-    {
-        new OpenApiSecurityScheme
-        {
-        Reference = new OpenApiReference
-            {
-            Type = ReferenceType.SecurityScheme,
-            Id = "Bearer"
-            },
-            Scheme = "oauth2",
-            Name = "Bearer",
-            In = ParameterLocation.Header,
+    Reference = new OpenApiReference
+     {
+     Type = ReferenceType.SecurityScheme,
+     Id = "Bearer"
+     },
+     Scheme = "oauth2",
+     Name = "Bearer",
+     In = ParameterLocation.Header,
 
-        },
-        new List<string>()
-        }
-    });
-
+    },
+    new List<string>()
+    }
+  });
 
 });
 
@@ -52,16 +52,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 
 builder.Services.AddCors(options =>
 {
  options.AddPolicy(name: "MyPolicy",
-     policy =>
-     {
-      policy.WithOrigins("http://localhost:8080")
-         .AllowAnyHeader()
-         .AllowAnyMethod();
-     });
+  policy =>
+  {
+   policy.WithOrigins("http://localhost:8080")
+    .AllowAnyHeader()
+    .AllowAnyMethod();
+  });
 });
 
 var key = Encoding.ASCII.GetBytes(Key.SecretKey);
