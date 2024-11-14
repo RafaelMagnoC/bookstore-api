@@ -1,0 +1,13 @@
+bin/
+obj/
+out/
+Properties/launchSettings.json
+.nuget/
+.vs/
+.idea/
+.vscode/
+~/.nuget/
+.gitmodules
+Thumbs.db
+ehthumbs.db
+.DS_Store
