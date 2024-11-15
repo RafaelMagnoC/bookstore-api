@@ -84,7 +84,7 @@ namespace BookStore.App.Modules.Admin
   {
    try
    {
-    AdminEntity? admin = await _context.Admin.Include(u => u.User).FirstOrDefaultAsync(adm => adm.Id.ToString() == adminId) ?? throw new NotFound($"nenhum administrador com o id: {adminId} encontrado.");
+    AdminEntity? admin = await _context.Admin.FirstOrDefaultAsync(adm => adm.Id.ToString() == adminId) ?? throw new NotFound($"nenhum administrador com o id: {adminId} encontrado.");
 
     _context.Remove(admin);
 

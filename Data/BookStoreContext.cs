@@ -9,8 +9,18 @@ namespace BookStore.Data
 
   public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-  public DbSet<UserEntity> User { get; set; }
-  public DbSet<AdminEntity> Admin { get; set; }
+  public required DbSet<UserEntity> User { get; set; }
+  public required DbSet<AdminEntity> Admin { get; set; }
 
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+   base.OnModelCreating(modelBuilder);
+
+   modelBuilder.Entity<AdminEntity>()
+    .HasOne(admin => admin.User)
+    .WithOne(user => user.Admin)
+    .HasForeignKey<UserEntity>(user => user.AdminId)
+    .OnDelete(DeleteBehavior.Cascade);
+  }
  }
 }

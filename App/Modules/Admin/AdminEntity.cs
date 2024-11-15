@@ -13,6 +13,7 @@ namespace BookStore.App.Modules.Admin
 
   [DisplayName("user")]
   public required UserEntity User { get; set; }
+
  }
 
 }

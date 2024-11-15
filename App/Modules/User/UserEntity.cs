@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BookStore.App.Modules.Admin;
 
 namespace BookStore.App.Modules.User
 {
@@ -26,6 +27,11 @@ namespace BookStore.App.Modules.User
    Password = password;
   }
   public UserEntity() { }
+
+  //relations
+  [ForeignKey(nameof(Admin))]
+  public Guid AdminId { get; set; }
+  public AdminEntity? Admin { get; set; }
  }
 }
 
