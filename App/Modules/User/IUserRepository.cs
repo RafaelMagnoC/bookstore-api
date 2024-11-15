@@ -2,14 +2,14 @@ namespace BookStore.App.Modules.User
 {
  public interface IUserRepository
  {
-  Task<UserEntity> Add(UserViewModel userViewModel);
+  Task<UserDTO?> Add(UserViewModel userViewModel);
 
-  List<UserEntity> Users();
+  Task<List<UserDTO>> Users();
 
-  Task<UserEntity?> User(string userId);
+  Task<UserDTO?> User(string userId);
 
-  Task<UserEntity> Att(string userId, UserViewModel userViewModel);
+  Task<UserDTO?> Att(string userId, UserViewModel userViewModel);
 
-  Task<bool> Remove(string userId);
+  Task<bool?> Remove(string userId);
  }
 }

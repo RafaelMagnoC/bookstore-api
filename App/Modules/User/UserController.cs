@@ -1,3 +1,4 @@
+using BookStore.App.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,25 +11,36 @@ namespace BookStore.App.Modules.User
   private readonly IUserRepository _userRepository = userRepository;
 
   [HttpPost]
-  public async Task<ActionResult<UserEntity>> Add(UserViewModel userViewModel)
+  public async Task<ActionResult<UserDTO?>> Add(UserViewModel userViewModel)
   {
-   UserEntity user = await _userRepository.Add(userViewModel);
+   UserDTO? user = await _userRepository.Add(userViewModel);
 
    return user;
   }
 
   [HttpGet]
-  public ActionResult<List<UserEntity>> Users()
+  public async Task<ActionResult<List<UserDTO>>> Users()
   {
-   List<UserEntity> users = _userRepository.Users();
-
+   List<UserDTO> users = await _userRepository.Users();
    return users;
   }
 
   [HttpGet("{userId}")]
-  public async Task<ActionResult<UserEntity?>> UserId([FromRoute] string userId)
+  public async Task<ActionResult<UserDTO?>> UserId([FromRoute] string userId)
   {
    return await _userRepository.User(userId);
+  }
+
+  [HttpPatch("{userId}")]
+  public async Task<ActionResult<UserDTO?>> Att([FromRoute] string userId, UserViewModel userViewModel)
+  {
+   return await _userRepository.Att(userId, userViewModel);
+  }
+
+  [HttpDelete("{userId}")]
+  public async Task<ActionResult<bool>> Remove([FromRoute] string userId)
+  {
+   return await _userRepository.Remove(userId);
   }
  }
 }

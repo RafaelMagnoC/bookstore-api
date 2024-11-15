@@ -1,7 +1,7 @@
 
 using BookStore.App.Modules.User;
 using BookStore.Data;
-using BookStore.Services;
+using BookStore.App.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.App.Modules.Auth

@@ -5,14 +5,16 @@ namespace BookStore.App.Modules.User
  public class UserViewModel
  {
   [Required]
-  [StringLength(100)]
+  [StringLength(60)]
   public required string Name { get; set; }
 
-  [StringLength(100)]
+  [Required]
+  [StringLength(60)]
   [EmailAddress]
   public required string Email { get; set; }
 
   [Required]
+  [StringLength(20)]
   public required string Password { get; set; }
  }
 }

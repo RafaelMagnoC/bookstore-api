@@ -1,4 +1,4 @@
-namespace BookStore.Security
+namespace BookStore.App.Security
 {
  public class Key
  {

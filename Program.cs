@@ -1,17 +1,22 @@
 using System.Text;
+using BookStore.App.Config;
+using BookStore.App.Middlewares;
 using BookStore.App.Modules.Auth;
 using BookStore.App.Modules.User;
-using BookStore.Config;
 using BookStore.Data;
-using BookStore.Security;
+using BookStore.App.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using BookStore.App.Modules.Admin;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(typeof(EntityToDTOMapping));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swagger =>
 {
@@ -52,6 +57,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IAdminRepository, AdminRepository>();
 builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 
 builder.Services.AddCors(options =>
@@ -88,6 +94,8 @@ builder.Services.AddAuthentication(jwt =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseMiddleware<CustomExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

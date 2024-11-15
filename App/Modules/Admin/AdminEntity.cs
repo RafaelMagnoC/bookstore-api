@@ -12,8 +12,7 @@ namespace BookStore.App.Modules.Admin
   public Guid Id { get; private set; }
 
   [DisplayName("user")]
-  public required UserEntity UserEntity { get; set; }
-
+  public required UserEntity User { get; set; }
  }
 
 }

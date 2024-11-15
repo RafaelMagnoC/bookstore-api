@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace BookStore.Config
+namespace BookStore.App.Config
 {
  public class SwaggerDefaultValues : IOperationFilter
  {

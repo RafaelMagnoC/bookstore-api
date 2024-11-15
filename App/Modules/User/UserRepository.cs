@@ -1,42 +1,105 @@
+using AutoMapper;
 using BookStore.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BookStore.App.Modules.User
 {
- public class UserRepository(ApplicationDbContext context) : IUserRepository
+ public class UserRepository(ApplicationDbContext context, IMapper mapper) : IUserRepository
  {
   private readonly ApplicationDbContext _context = context;
+  private readonly IMapper _mapper = mapper;
 
-  public async Task<UserEntity> Add(UserViewModel userViewModel)
+  public async Task<UserDTO?> Add(UserViewModel userViewModel)
   {
+   try
+   {
 
-   UserEntity userCreated = new(userViewModel.Name, userViewModel.Email, userViewModel.Password);
+    UserEntity userEntity = new(userViewModel.Name, userViewModel.Email, userViewModel.Password);
 
-   EntityEntry<UserEntity> userAdd = await _context.User.AddAsync(userCreated);
-   _context.SaveChanges();
+    EntityEntry<UserEntity> user = await _context.User.AddAsync(userEntity);
+    await _context.SaveChangesAsync();
 
-   return userAdd.Entity;
+    UserDTO? userExists = await this.User(userEntity.Id.ToString());
+
+    return userExists;
+
+   }
+   catch (Exception ex)
+   {
+    throw new Exception(ex.ToString());
+   }
   }
 
-  public Task<UserEntity> Att(string userId, UserViewModel userViewModel)
+  public async Task<UserDTO?> Att(string userId, UserViewModel userViewModel)
   {
-   throw new NotImplementedException();
+   try
+   {
+    UserEntity? userExists = await _context.User.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
+
+    if (userExists == null)
+    {
+     return null;
+    }
+
+    userExists.Name = userViewModel.Name;
+    userExists.Email = userViewModel.Email;
+    userExists.Password = userViewModel.Password;
+    userExists.UpdatedAt = DateTime.Now;
+
+    _context.User.Update(userExists);
+
+    await _context.SaveChangesAsync();
+
+    return await User(userExists.Id.ToString());
+   }
+   catch (Exception exception)
+   {
+    throw new Exception(exception.ToString());
+   }
+
   }
 
-  public Task<bool> Remove(string userId)
+  public async Task<bool?> Remove(string userId)
   {
-   throw new NotImplementedException();
+   try
+   {
+    UserEntity? userExists = await _context.User.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
+
+    if (userExists == null)
+    {
+     return null;
+    }
+
+    _context.User.Remove(userExists);
+
+    int userSuccessfullyRemoved = await _context.SaveChangesAsync();
+
+    return userSuccessfullyRemoved == 1;
+   }
+   catch (Exception ex)
+   {
+    throw new Exception(ex.ToString());
+   }
+
   }
 
-  public async Task<UserEntity?> User(string userId)
+  public async Task<UserDTO?> User(string userId)
   {
-   return await _context.User.FindAsync(userId);
+   UserEntity? user = await _context.User.FindAsync(userId);
+
+   if (user == null)
+   {
+    return null;
+   }
+
+   return _mapper.Map<UserDTO>(user);
   }
 
-  public List<UserEntity> Users()
+  public async Task<List<UserDTO>> Users()
   {
-   List<UserEntity> users = [.. _context.User];
-   return users;
+   List<UserEntity> users = await _context.User.ToListAsync();
+   return users.Count > 0 ? _mapper.Map<List<UserDTO>>(users) : [];
   }
  }
 }

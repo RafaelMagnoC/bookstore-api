@@ -1,11 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BookStore.App.Modules.Auth;
-using BookStore.Security;
+using BookStore.App.Security;
 using Microsoft.IdentityModel.Tokens;
 
-namespace BookStore.Services
+namespace BookStore.App.Services
 {
  public class TokenService
  {
@@ -15,7 +14,7 @@ namespace BookStore.Services
    byte[] key = Encoding.ASCII.GetBytes(Key.SecretKey);
    SecurityTokenDescriptor tokenConfig = new()
    {
-    Subject = new System.Security.Claims.ClaimsIdentity([
+    Subject = new ClaimsIdentity([
      new Claim("userId", userId),
     ]),
     Expires = DateTime.UtcNow.AddHours(1),
