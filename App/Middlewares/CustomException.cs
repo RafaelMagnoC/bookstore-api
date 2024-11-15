@@ -13,55 +13,60 @@ namespace BookStore.App.Middlewares
    {
     await _next(context);
    }
-   catch (NotAuthenticated ex)
+   catch (NotAuthenticated exception)
    {
-    _logger.LogError(ex, "Erro de autenticação.");
-    await HandleExceptionAsync(context, ex, StatusCodes.Status401Unauthorized);
+    _logger.LogError(exception, "Erro de autenticação.");
+    await HandleExceptionAsync(context, exception, StatusCodes.Status401Unauthorized);
    }
-   catch (NotAuthorized ex)
+   catch (NotAuthorized exception)
    {
-    _logger.LogError(ex, "Erro de autorização.");
-    await HandleExceptionAsync(context, ex, StatusCodes.Status403Forbidden);
+    _logger.LogError(exception, "Erro de autorização.");
+    await HandleExceptionAsync(context, exception, StatusCodes.Status403Forbidden);
    }
-   catch (BadRequest ex)
+   catch (BadRequest exception)
    {
-    _logger.LogError(ex, "Erro na requisição.");
-    await HandleExceptionAsync(context, ex, StatusCodes.Status400BadRequest);
+    _logger.LogError(exception, "Erro na requisição.");
+    await HandleExceptionAsync(context, exception, StatusCodes.Status400BadRequest);
    }
-   catch (AvailableQuantity ex)
+   catch (AvailableQuantity exception)
    {
-    _logger.LogError(ex, "Produto sem saldo disponível.");
-    await HandleExceptionAsync(context, ex, StatusCodes.Status423Locked);
+    _logger.LogError(exception, "Produto sem saldo disponível.");
+    await HandleExceptionAsync(context, exception, StatusCodes.Status423Locked);
    }
-   catch (NotFound ex)
+   catch (NotFound exception)
    {
-    _logger.LogError(ex, "Nenhum resultado encontrado.");
-    await HandleExceptionAsync(context, ex, StatusCodes.Status404NotFound);
+    _logger.LogError(exception, "Nenhum resultado encontrado.");
+    await HandleExceptionAsync(context, exception, StatusCodes.Status404NotFound);
    }
-   catch (CreateException ex)
+   catch (CreateException exception)
    {
-    _logger.LogError(ex, "Um erro ocorreu durante a criação.");
-    await HandleExceptionAsync(context, ex, StatusCodes.Status422UnprocessableEntity);
+    _logger.LogError(exception, "Um erro ocorreu durante a criação.");
+    await HandleExceptionAsync(context, exception, StatusCodes.Status422UnprocessableEntity);
    }
-   catch (UpdateException ex)
+   catch (UpdateException exception)
    {
-    _logger.LogError(ex, "Um erro ocorreu durante a atualização.");
-    await HandleExceptionAsync(context, ex, StatusCodes.Status422UnprocessableEntity);
+    _logger.LogError(exception, "Um erro ocorreu durante a atualização.");
+    await HandleExceptionAsync(context, exception, StatusCodes.Status422UnprocessableEntity);
    }
-   catch (RemoveException ex)
+   catch (RemoveException exception)
    {
-    _logger.LogError(ex, "Um erro ocorreu ao remover.");
-    await HandleExceptionAsync(context, ex, StatusCodes.Status422UnprocessableEntity);
+    _logger.LogError(exception, "Um erro ocorreu ao remover.");
+    await HandleExceptionAsync(context, exception, StatusCodes.Status422UnprocessableEntity);
    }
-   catch (UniqueKeyException ex)
+   catch (UniqueKeyException exception)
    {
-    _logger.LogError(ex, "Chave única já existe.");
-    await HandleExceptionAsync(context, ex, StatusCodes.Status422UnprocessableEntity);
+    _logger.LogError(exception, "Chave única já existe.");
+    await HandleExceptionAsync(context, exception, StatusCodes.Status422UnprocessableEntity);
    }
-   catch (Exception ex)
+   catch (InvalidCredential exception)
    {
-    _logger.LogError(ex, "Erro interno.");
-    await HandleExceptionAsync(context, ex, StatusCodes.Status500InternalServerError);
+    _logger.LogError(exception, "Chave única já existe.");
+    await HandleExceptionAsync(context, exception, StatusCodes.Status422UnprocessableEntity);
+   }
+   catch (Exception exception)
+   {
+    _logger.LogError(exception, "Erro interno.");
+    await HandleExceptionAsync(context, exception, StatusCodes.Status500InternalServerError);
    }
   }
 

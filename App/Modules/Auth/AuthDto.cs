@@ -2,8 +2,8 @@ namespace BookStore.App.Modules.Auth
 {
  public class AuthDTO
  {
-  public string? UserId { get; }
-  public string? Email { get; }
-  public string? Token { get; }
+  public string? UserId { get; set; }
+  public string? Email { get; set; }
+  public string? Token { get; set; }
  }
 }
